@@ -61,7 +61,6 @@ function login()
 {
 
 
-
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -97,14 +96,51 @@ function login()
 
         exit;
     }
-
-
-
-
-
-
-
-
-    var_dump($user);
 }
 // akhir function login
+
+
+// awal tambahSiswa
+function tambahSiswa()
+{
+
+    $nisn = $_POST['nisn'];
+    $nis = $_POST['nis'];
+    $nama = $_POST['nama'];
+    $id_kelas = $_POST['id_kelas'];
+    $alamat = $_POST['alamat'];
+    $no_telp = $_POST['no_telp'];
+    $id_spp = $_POST['id_spp'];
+
+    global $conn;
+
+    // cek apakah nisn sudah pernah terdaftar
+    $cekNisn = query("SELECT * FROM siswa WHERE nisn = '$nisn'")[0];
+    $cekNis = query("SELECT * FROM siswa WHERE nis = '$nis'")[0];
+    // end cek nisn
+    if (!empty($cekNisn)) {
+
+        echo '<script>alert("Nisn Sudah Terdaftar silahkan cek kembali"); window.location="siswa.php"</script>';
+        exit;
+    } else {
+
+        if (!empty($cekNis)) {
+
+            echo '<script>alert("Nis Sudah Terdaftar silahkan cek kembali"); window.location="siswa.php"</script>';
+        } else {
+
+            $query = "INSERT INTO `siswa` (`nisn`, `nis`, `nama`, `id_kelas`, `alamat`, `no_telp`, `id_spp`) VALUES ('$nisn', '$nis', '$nama', '7', '$alamat', '$no_telp', '3')";
+
+            $result = mysqli_query($conn, $query);
+
+            if ($result) {
+                echo '<script>alert("Data Siswa Berhasil didaftartkan"); window.location="siswa.php"</script>';
+                exit;
+            }
+
+            echo '<script>alert("Data Siswa gagal didaftartkan"); window.location="siswa.php"</script>';
+        }
+    }
+}
+
+// akhir tambahSiswa
